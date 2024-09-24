@@ -18,7 +18,7 @@ public class BoardDAO extends JDBConnect{
 		
 		String query = "SELECT count(*) FROM board";
 		if(map.get("searchWord") != null) {
-			query += " WHERE"+map.get("searchField")+""+"LIKE'%"+map.get("serchWord")+"%'";
+			query += " WHERE"+map.get("searchField")+""+"LIKE'%"+map.get("searchWord")+"%'";
 		}
 		
 		try {
@@ -34,20 +34,57 @@ public class BoardDAO extends JDBConnect{
 		}
 	return totalCount;
 	}
-	public List<BoardDTO> selectList(Map<String,Object> map) {
+    public List<BoardDTO> selectList(Map<String, Object> map) { 
+        List<BoardDTO> bbs = new Vector<BoardDTO>();  
+
+        String query = "SELECT b.*,m.name FROM board b inner join member m on m.id = b.id ";
+        if (map.get("searchWord") != null) {
+            query += " WHERE " + map.get("searchField") + " "
+                   + " LIKE '%" + map.get("searchWord") + "%' ";
+        }
+        query += " ORDER BY num DESC "; 
+
+        try {
+            stmt = con.createStatement();  
+            rs = stmt.executeQuery(query);  
+
+            while (rs.next()) {  
+                BoardDTO dto = new BoardDTO(); 
+
+                dto.setNum(rs.getString("num"));          
+                dto.setTitle(rs.getString("title"));      
+                dto.setContent(rs.getString("content"));  
+                dto.setPostdate(rs.getDate("postdate"));  
+                dto.setId(rs.getString("id"));
+                dto.setName(rs.getString("name"));
+                dto.setVisitcount(rs.getString("visitcount"));  
+
+                bbs.add(dto);  
+            }
+        } 
+        catch (Exception e) {
+            System.out.println("게시물 조회 중 예외 발생");
+            e.printStackTrace();
+        }
+
+        return bbs;
+    }
+	public List<BoardDTO> selectListPage(Map<String,Object> map) {
 		List<BoardDTO> bbs = new Vector<BoardDTO>();
-		String query = "SELECT num,title,content,b.id, m.name ,postdate,visitcount "
-				 + "FROM board b "
-				 + "JOIN member m on b.id = m.id ";; 
-		if (map.get("searchWord") != null) {
-			query += " WHERE " + map.get("searchField") + " " +
-		             " LIKE '%" + map.get("searchWord")+"%' ";
-		}			
-		query += " ORDER BY num DESC ";
+		String query = " SELECT * FROM (Select b.*, rownum rn from(Select * from board b inner join member m on b.id=m.id "; 
+        if (map.get("searchWord") != null) {
+            query += " WHERE " + map.get("searchField")
+                   + " LIKE '%" + map.get("searchWord") + "%'	";
+        }		
+		query += " ORDER BY num DESC) b ) where rn between ? and ?";
 		
 		try {
-			stmt = con.createStatement();
-			rs = stmt.executeQuery(query);
+			psmt = con.prepareStatement(query);
+			psmt.setString(1, map.get("start").toString());
+			psmt.setString(2, map.get("end").toString());
+			rs = psmt.executeQuery();
+			
+			
 			while (rs.next()) {
 			BoardDTO dto = new BoardDTO();
 			dto.setNum(rs.getString("num"));
@@ -55,8 +92,8 @@ public class BoardDAO extends JDBConnect{
 			dto.setContent(rs.getString("content"));
 			dto.setPostdate(rs.getDate("postdate"));
 			dto.setId(rs.getString("id"));
-			dto.setVisitcount(rs.getString("visitcount"));
 			dto.setName(rs.getString("name"));
+			dto.setVisitcount(rs.getString("visitcount"));
 			bbs.add(dto);		
 			}
 		} catch(Exception e) {
@@ -139,7 +176,7 @@ public class BoardDAO extends JDBConnect{
 		int result = 0;
 		
 		try {
-			String query = "update board set title=?, content=? where num";
+			String query = "UPDATE board SET title = ? , content = ? where num = ? ";
 			
 			psmt = con.prepareStatement(query);
 			psmt.setString(1, dto.getTitle());
@@ -155,6 +192,24 @@ public class BoardDAO extends JDBConnect{
 		
 		return result;
 	}
-	
+	public int deletePost(BoardDTO dto) { 
+        int result = 0;
+
+        try {
+            String query = "DELETE FROM board WHERE num=?"; 
+
+            
+            psmt = con.prepareStatement(query); 
+            psmt.setString(1, dto.getNum()); 
+
+            result = psmt.executeUpdate(); 
+        } 
+        catch (Exception e) {
+            System.out.println("게시물 삭제 중 예외 발생");
+            e.printStackTrace();
+        }
+        
+        return result; 
+    }
 }
 
