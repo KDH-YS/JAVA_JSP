@@ -1,10 +1,19 @@
 package com.example.demo;
 
+  
+
+import org.springframework.stereotype.Service;
+
+  
+
+@Service
+
 public class MessageService {
 
-	public String getMessage(Integer id) {
-		return messageMapper.getMessageById(id);
-	
-	}
-	
+public String getMessage(String ms) {
+
+return ms;
+
+}
+
 }
