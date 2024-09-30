@@ -10,11 +10,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class MessageController {
 	@Autowired
 	private MessageService messageService;
-	@GetMapping("/messages/{id}")
+	@GetMapping("/messages/{ms}")
 	@ResponseBody
-	public Message getMessage(@PathVariable("id") Integer id) {
+	public String getMessage(@PathVariable("ms") Integer ms) {
 		// Integer id = 1;
-		return messageService.getMessage(id);
+		return  messageService.getMessage(ms);
 	}
 
 }

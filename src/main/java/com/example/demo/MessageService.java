@@ -8,8 +8,10 @@ public class MessageService {
 	@Autowired
 	private MessageMapper messageMapper;
 	// 데이터베이스에서 값을 가져오는 것
-	public Message getMessage(Integer id) {
-		return messageMapper.getMessageById(id);
+	public String getMessage(Integer id) {
+		Message message = messageMapper.getMessageById(id);
+		
+		return message.getName()+" "+message.getJob();
 		//return "Hello World";
 	}
 }

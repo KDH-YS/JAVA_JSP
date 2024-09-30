@@ -1,19 +1,28 @@
 package com.example.demo;
 
 public class Message {
-	private Integer id; // 1
-	private String message; // Hello World!
+	private Integer id;
+	private String name;
+	private String job;
 	public Integer getId() {
 		return id;
 	}
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	public String getMessage() {
-		return message;
+	public String getName() {
+		return name;
 	}
-	public void setMessage(String message) {
-		this.message = message;
+	public void setName(String name) {
+		this.name = name;
 	}
-
+	public String getJob() {
+		return job;
+	}
+	public void setJob(String job) {
+		this.job = job;
+	}
+	
+	
+	
 }
