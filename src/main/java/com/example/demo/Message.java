@@ -1,8 +1,8 @@
 package com.example.demo;
 
 public class Message {
-	private Integer id;
-	private String message;
+	private Integer id; // 1
+	private String message; // Hello World!
 	public Integer getId() {
 		return id;
 	}
@@ -15,7 +15,5 @@ public class Message {
 	public void setMessage(String message) {
 		this.message = message;
 	}
-	
-	
-	
+
 }
