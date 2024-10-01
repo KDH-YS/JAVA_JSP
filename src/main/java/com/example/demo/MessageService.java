@@ -1,22 +1,4 @@
 package com.example.demo;
-
-<<<<<<< HEAD
-  
-
-import org.springframework.stereotype.Service;
-
-  
-
-@Service
-
-public class MessageService {
-
-public String getMessage(String ms) {
-
-return ms;
-
-=======
-
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +22,4 @@ public class MessageService {
 	public List<Message> getMessagesLimit10() {
 		return messageMapper.getMessagesLimit10();
 	}
->>>>>>> a0a00a4
-}
-
 }

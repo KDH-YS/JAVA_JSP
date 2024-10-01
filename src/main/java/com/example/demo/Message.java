@@ -1,6 +1,5 @@
 package com.example.demo;
 
-
 public class Message {
 	private Integer id; // 1
 	private String message; // Hello World!
