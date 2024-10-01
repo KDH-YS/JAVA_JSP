@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>메시지 검색</title>
+</head>
+<body>
+	<div class="container">
+		<h1>메시지 검색</h1>
+		<form id="messageSearch" onsubmit="return search()">
+			<label for="message">메시지:</label>
+			<input type="text" id="message_id" name="message" required />
+			<button type="submit">검색</button>
+		</form>
+	</div>
+	
+	<script>
+		function search() {
+			// 입력 필드의 값을 가져옴
+			const inputvalue = document.getElementById("message_id").value;
+
+			// 현재 URL을 가져옴
+			const url = window.location.href;
+
+			// 입력값을 URL에 추가
+			const newUrl = url +"message/"+ encodeURIComponent(inputvalue);
+
+			// 새로운 URL로 이동
+			window.location.href = newUrl;
+
+			// 폼 제출 방지
+			return false;
+		}
+	</script>
+</body>
+</html>

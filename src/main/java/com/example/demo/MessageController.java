@@ -20,9 +20,9 @@ public class MessageController {
 	@GetMapping("/{id}")
 	@ResponseBody
 	public Message getMessage(@PathVariable("id") Integer id) {
-		// Integer id = 1;
-		return messageService.getMessage(id);
+	    return messageService.getMessage(id); // id 변수를 사용
 	}
+
 	
 	@GetMapping("/create")
 	public String create() {
