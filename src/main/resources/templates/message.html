@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<h1>Message List</h1>
+<div id="loading" class="loading">Loading...</div>
+<div id="error">An error occurred while fetching data.</div>
+<div id="messageList"></div>
+
+<script th:inline="javascript">
+/*<![CDDATA[*/
+function fetchMessages() {
+	const messageList = document.getElementById('messageList');
+	const loading = document.getElementById('loading');
+	const error = document.getElementById('error');
+	
+	loading.style.display = 'block';
+	error.style.display = 'none';
+	messageList.innerHTML = '';
+	
+	fetch('/messages/api')
+		.then(response => {
+			if(!response.ok) {
+				throw new Error('Network response was not ok');
+			}
+			return response.json();
+		})
+		.then(messages => {
+			loading.style.display = 'none';
+			messages.forEach(msg => {
+				const li = document.createElement('li');
+				li.textContent = `${msg.message} (${msg.id})`;
+				messageList.appendChild(li);
+			})
+		})
+		.catch(error => {
+			console.error('Fetch error:', err);
+			loading.style.display = 'none';
+			error.style.display = 'block';
+		})
+}
+/*]]>*/
+</script>
+</body>
+</html>

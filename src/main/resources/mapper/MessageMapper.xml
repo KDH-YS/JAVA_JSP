@@ -4,4 +4,12 @@
     <select id="getMessageById" resultType="com.example.demo.Message">
         SELECT * FROM hello WHERE id = #{id}
     </select>
+    
+    <insert id="insertMessage" parameterType="com.example.demo.Message">
+    	INSERT INTO hello (message) VALUES (#{message})
+    </insert>
+
+    <select id="getMessagesLimit10" resultType="com.example.demo.Message">
+        SELECT * FROM hello ORDER BY id DESC LIMIT 10;
+    </select>
 </mapper>
